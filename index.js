@@ -21,13 +21,10 @@ io.on("connection", (socket) => {
 
   // 클라이언트에서 join이벤트를 보냈을 경우에 대해서 처리 `on`
   socket.on("join", ({ name, room }, callback) => {
-    // console.log(name, room);
-    // console.log(socket.id, "socketid");
     const { error, user } = addUser({ id: socket.id, name, room });
     if (error) return callback(error); // username taken
     // 해당 유저 방에 접속처리
     socket.join(user.room);
-    // console.log(user.room);
     // 관리자(서버)에서 소켓으로 보내는 이벤트
     socket.emit("message", {
       user: "admin",
