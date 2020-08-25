@@ -27,14 +27,13 @@ io.on("connection", (socket) => {
     socket.join(user.room);
     // 관리자(서버)에서 소켓으로 보내는 이벤트
     socket.emit("message", {
-      user: "Administrator",
+      user: "admin",
       text: `${user.name}, welcome to the room ${user.room}`,
     });
     // 같은 방에 있는 유저에게 보내는 서버측 전달
-    socket.broadcast.to(user.room).emit("message", {
-      user: "Administrator",
-      text: `${user.name}, has joined!`,
-    });
+    socket.broadcast
+      .to(user.room)
+      .emit("message", { user: "admin", text: `${user.name}, has joined!` });
 
     io.to(user.room).emit("roomData", {
       room: user.room,
@@ -64,7 +63,7 @@ io.on("connection", (socket) => {
 
     if (user) {
       io.to(user.room).emit("message", {
-        user: "Administrator",
+        user: "Admin",
         text: `${user.name} has left.`,
       });
       io.to(user.room).emit("roomData", {
